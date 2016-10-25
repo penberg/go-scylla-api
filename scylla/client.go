@@ -30,6 +30,14 @@ func (c *Client) Flush(keyspace string, columnFamilies []string) error {
 	return c.post(target, nil)
 }
 
+func (c *Client) Rebuild(sourceDC string) error {
+	target := "/storage_service/rebuild/"
+	if len(sourceDC) > 0 {
+		target += "?source_dc=" + sourceDC
+	}
+	return c.post(target, nil)
+}
+
 func (c *Client) post(target string, body io.Reader) error {
 	if _, err := http.Post(c.baseURL+target, "application/json", nil); err != nil {
 		return err
